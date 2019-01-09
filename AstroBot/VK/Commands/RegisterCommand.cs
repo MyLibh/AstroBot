@@ -32,14 +32,14 @@ namespace AstroBot.VK.Commands
                 student.Name    = words[1].Substring(0, Math.Min(words[1].Length, Student.NameMaxLength));
                 student.Surname = words[2].Substring(0, Math.Min(words[2].Length, Student.SurnameMaxLength));
                 student.Class   = words[3].Substring(0, Math.Min(words[3].Length, Student.ClassMaxLength));
-                student.VKId    = msg.FromId.ToString();
+                student.VKId    = msg.UserId.ToString();
 
                 if (DataBase.Students.Exist(Students.ExistOption.VKId, student.VKId) != 0)
                     throw new ArgumentException("Already registered");
 
                 var id = DataBase.Students.Exist(Students.ExistOption.Surname, student.Surname);
                 if (id != 0)
-                    DataBase.Students.Update(Students.UpdateOption.VKId, student.Surname, student.TGId);
+                    DataBase.Students.Update(Students.UpdateOption.VKId, student.Surname, student.VKId);
                 else
                     DataBase.Students.Add(student);
             }
@@ -53,7 +53,7 @@ namespace AstroBot.VK.Commands
                     Message = AnswerError + "(" + e.Message + ")\n" + AnswerInfo
                 });
 
-                Logger.Log(Logger.Module.TG, Logger.Type.Warning, $"{msg.FromId}: {msg.Text} ({e.Message})");
+                Logger.Log(Logger.Module.VK, Logger.Type.Warning, $"{msg.UserId}: {msg.Body} ({e.Message})");
 
                 return;
             }
@@ -66,7 +66,7 @@ namespace AstroBot.VK.Commands
                 Message = AnswerOk
             });
 
-            Logger.Log(Logger.Module.TG, Logger.Type.Info, $"{student.TGId}: {msg.Text}");
+            Logger.Log(Logger.Module.VK, Logger.Type.Info, $"{student.VKId}: {msg.Body}");
         }
     }
 }
