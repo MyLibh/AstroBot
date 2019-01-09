@@ -9,6 +9,8 @@ namespace AstroBot.TG.Commands
     {
         public override string Name => "task";
 
+        public new string AnswerInfo => "Not implemented yet";
+
         public override void Execute(Message msg, TelegramBotClient client)
         {
             var chatId = msg.Chat.Id;
@@ -16,7 +18,7 @@ namespace AstroBot.TG.Commands
 
             Logger.Log(Logger.Module.TG, Logger.Type.Info, "'" + msg.From.Username + "'" + " > " + msg.Text);
 
-            client.SendTextMessageAsync(chatId, "Not implemented yet", replyToMessageId: msgId);
+            client.SendTextMessageAsync(chatId, AnswerInfo, replyToMessageId: msgId);
         }
     }
 }

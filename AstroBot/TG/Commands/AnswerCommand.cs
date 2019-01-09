@@ -7,6 +7,8 @@ namespace AstroBot.TG.Commands
     {
         public override string Name => "answer";
 
+        public new string AnswerInfo => throw new System.NotImplementedException();
+
         public override void Execute(Message msg, TelegramBotClient client)
         {
             var chatId = msg.Chat.Id;

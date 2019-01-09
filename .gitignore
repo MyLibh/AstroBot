@@ -8,3 +8,6 @@ AstroBot/config/
 AstroBot/bin/
 
 .vs/
+AstroBot/DB/DB\.mdf
+
+AstroBot/DB/DB_log\.ldf

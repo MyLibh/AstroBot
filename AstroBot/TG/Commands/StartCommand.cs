@@ -7,12 +7,14 @@ namespace AstroBot.TG.Commands
     {
         public override string Name => "start";
 
+        public new string AnswerInfo => "Привет!\nЯ Астробот.\nК сожалению, мои возможности ограничены :(\n";
+
         public override void Execute(Message msg, TelegramBotClient client)
         {
             var chatId = msg.Chat.Id;
             var msgId = msg.MessageId;
 
-            client.SendTextMessageAsync(chatId, "Привет!\nЯ Астробот.\nК сожалению, мои возможности ограничены :(\n" + ListCommand.List, replyToMessageId: msgId);
+            client.SendTextMessageAsync(chatId, AnswerInfo + ListCommand.AnswerInfo, replyToMessageId: msgId);
         }
     }
 }

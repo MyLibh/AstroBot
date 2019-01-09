@@ -14,6 +14,7 @@
   <ItemGroup>
     <PackageReference Include="CSharp.OleDb" Version="1.0.4.1" />
     <PackageReference Include="EntityFramework" Version="6.2.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.6.0" />
     <PackageReference Include="Telegram.Bot" Version="14.10.0" />
     <PackageReference Include="VkNet" Version="1.40.0" />
   </ItemGroup>
@@ -31,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DataBase\" />
+    <Folder Include="logs\" />
   </ItemGroup>
 
 </Project>
