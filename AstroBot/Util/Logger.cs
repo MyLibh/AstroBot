@@ -24,7 +24,7 @@ namespace AstroBot.Util
 
         private static string filename = "../../../logs/ " + DateTime.Now.ToFileTimeUtc() + ".log";
 
-        public static async void Log(Module module, Type type, string message)
+        public static void Log(Module module, Type type, string message)
         {
             string str = "<" + DateTime.Now + ">" + "{" + module.ToString() + "}" + "[" + type.ToString() + "]" + "(" + message + ")" + "\r\n"; 
 
@@ -34,7 +34,7 @@ namespace AstroBot.Util
             using (FileStream SourceStream = File.OpenWrite(filename))
             {
                 SourceStream.Seek(0, SeekOrigin.End);
-                await SourceStream.WriteAsync(result, 0, result.Length);
+                SourceStream.Write(result, 0, result.Length);
             }
 
             Console.Write(str);

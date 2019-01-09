@@ -1,7 +1,7 @@
-﻿using System;
-
-using Telegram.Bot.Args;
+﻿using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
+
+using AstroBot.Util;
 
 namespace AstroBot.TG
 {
@@ -16,7 +16,7 @@ namespace AstroBot.TG
             if (msg.Type != MessageType.Text)
                 return;
 
-            Console.WriteLine(e.Message.From.Username + " > " + e.Message.Text);
+            Logger.Log(Logger.Module.TG, Logger.Type.Debug, msg.From.Username + " > " + e.Message.Text);
 
             foreach (var command in commands)
                 if (command.Contains(msg.Text))

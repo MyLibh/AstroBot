@@ -42,14 +42,14 @@ namespace AstroBot.DB.Students
             await cmd.ExecuteNonQueryAsync();
         }
 
-        public async void Update(UpdateOption opt, int id, string newMessengerId)
+        public async void Update(UpdateOption opt, string surname, string newMessengerId)
         {
-            string sql = "UPDATE Students SET " + opt.ToString() + " = @messengerId WHERE Id = @Id";
+            string sql = "UPDATE Students SET " + opt.ToString() + " = @messengerId WHERE Surname = @Surname";
 
             SqlCommand cmd = connection.CreateCommand();
             cmd.CommandText = sql;
 
-            cmd.Parameters.Add("@Id", System.Data.SqlDbType.Int).Value = id;
+            cmd.Parameters.Add("@Surname", System.Data.SqlDbType.NVarChar).Value = surname;
             cmd.Parameters.Add("@messengerId", System.Data.SqlDbType.NVarChar).Value = newMessengerId;
             
            await cmd.ExecuteNonQueryAsync();

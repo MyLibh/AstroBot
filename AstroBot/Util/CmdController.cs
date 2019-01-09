@@ -11,9 +11,10 @@ namespace AstroBot.Util
                 var str = Console.ReadLine();
                 if(str == "help")
                 {
-                    Console.WriteLine("start - Запустить программу");
-                    Console.WriteLine("exit  - Остановить программу");
-                    Console.WriteLine("help  - Вывести хелп");
+                    Console.WriteLine("start  - Запустить программу");
+                    Console.WriteLine("exit   - Остановить программу");
+                    Console.WriteLine("showdb - Показать бд учеников");
+                    Console.WriteLine("help   - Вывести хелп");
                 }
                 else if(str == "start")
                 {
@@ -22,6 +23,7 @@ namespace AstroBot.Util
                     DB.DataBase.OpenConnection();
 
                     TG.Bot.Start();
+                    VK.Bot.Start();
 
                     Logger.Log(Logger.Module.Core, Logger.Type.Info, "Started");
                 }
@@ -29,6 +31,7 @@ namespace AstroBot.Util
                 {
                     Logger.Log(Logger.Module.Core, Logger.Type.Info, "Stopping...");
 
+                    VK.Bot.Stop();
                     TG.Bot.Stop();
 
                     DB.DataBase.CloseConnection();

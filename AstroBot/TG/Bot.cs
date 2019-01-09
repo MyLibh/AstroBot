@@ -37,13 +37,10 @@ namespace AstroBot.TG
             return client;
         }
 
-        //public static Logger GetLogger()
-        //{
-        //    return logger;
-        //}
-
         private static void initCommandsList()
         {
+            Logger.Log(Logger.Module.TG, Logger.Type.Info, "Initializing commands list...");
+
             commandsList = new List<Command>();
             commandsList.Add(new RegisterCommand());
             commandsList.Add(new ListCommand());
@@ -51,17 +48,25 @@ namespace AstroBot.TG
             commandsList.Add(new TaskCommand());
             commandsList.Add(new SolutionCommand());
             commandsList.Add(new StartCommand());
+
+            Logger.Log(Logger.Module.TG, Logger.Type.Info, "Commands list initialized");
         }
 
         private static void initCallbacks()
         {
+            Logger.Log(Logger.Module.TG, Logger.Type.Info, "Initializing callbacks...");
+
             client.OnMessage += MessageController.Update;
+
+            Logger.Log(Logger.Module.TG, Logger.Type.Info, "Callbacks initialized");
         }
 
         public static void Stop()
         {
             Logger.Log(Logger.Module.TG, Logger.Type.Info, "Stopping bot...");
+
             client.StopReceiving();
+
             Logger.Log(Logger.Module.TG, Logger.Type.Info, "Bot stopped");
         }
     }

@@ -10,10 +10,10 @@ namespace AstroBot.DB.Students
         public static readonly int TGIdMaxLength = 15;
         public static readonly int VKIdMaxLength = 15;
 
-        public string Name    = "Иван";
-        public string Surname = "Иванов";
-        public string Class   = "11X";
-        public string TGId    = "undefined";
-        public string VKId    = "undefined";
+        public string Name    = "???";
+        public string Surname = "???";
+        public string Class   = "???";
+        public string TGId    = "???";
+        public string VKId    = "???";
     }
 }
