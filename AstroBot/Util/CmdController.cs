@@ -27,7 +27,27 @@ namespace AstroBot.Util
 
                     Logger.Log(Logger.Module.Core, Logger.Type.Info, "Started");
                 }
-                else if(str == "exit" || str == "stop")
+                else if (str == "starttg")
+                {
+                    Logger.Log(Logger.Module.Core, Logger.Type.Info, "Starting...");
+
+                    DB.DataBase.OpenConnection();
+
+                    TG.Bot.Start();
+
+                    Logger.Log(Logger.Module.Core, Logger.Type.Info, "Started");
+                }
+                else if (str == "startvk")
+                {
+                    Logger.Log(Logger.Module.Core, Logger.Type.Info, "Starting...");
+
+                    DB.DataBase.OpenConnection();
+
+                    VK.Bot.Start();
+
+                    Logger.Log(Logger.Module.Core, Logger.Type.Info, "Started");
+                }
+                else if(str == "exit" || str == "stop" || str == "close")
                 {
                     Logger.Log(Logger.Module.Core, Logger.Type.Info, "Stopping...");
 
@@ -37,6 +57,7 @@ namespace AstroBot.Util
                     DB.DataBase.CloseConnection();
 
                     Logger.Log(Logger.Module.Core, Logger.Type.Info, "Stopped");
+
                     Console.ReadLine();
                     break;
                 }
