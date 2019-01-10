@@ -11,8 +11,7 @@ namespace AstroBot.Util
             Info,
             Debug,
             Warning,
-            Error,
-            Log
+            Error
         }
 
         public enum Module
@@ -37,7 +36,31 @@ namespace AstroBot.Util
                 SourceStream.Write(result, 0, result.Length);
             }
 
+            ConsoleColor color = Console.ForegroundColor;
+            switch (type)
+            {
+                case Type.Debug:
+                    color = ConsoleColor.DarkYellow;
+                    break;
+
+                case Type.Error:
+                    color = ConsoleColor.Red;
+                    break;
+
+                case Type.Info:
+                    color = ConsoleColor.Blue;
+                    break;
+
+                case Type.Warning:
+                    color = ConsoleColor.DarkMagenta;
+                    break;
+            }
+
+            var old = Console.ForegroundColor;
+            Console.ForegroundColor = color;
             Console.Write(str);
+
+            Console.ForegroundColor = old;
         }
     }
 }

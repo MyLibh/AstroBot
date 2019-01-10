@@ -34,11 +34,10 @@ namespace AstroBot.VK.Commands
                 student.Class   = words[3].Substring(0, Math.Min(words[3].Length, Student.ClassMaxLength));
                 student.VKId    = msg.UserId.ToString();
 
-                if (DataBase.Students.Exist(Students.ExistOption.VKId, student.VKId) != 0)
+                if (DataBase.Students.Exist(Students.ExistOption.VKId, student.VKId))
                     throw new ArgumentException("Already registered");
 
-                var id = DataBase.Students.Exist(Students.ExistOption.Surname, student.Surname);
-                if (id != 0)
+                if (DataBase.Students.Exist(Students.ExistOption.Surname, student.Surname))
                     DataBase.Students.Update(Students.UpdateOption.VKId, student.Surname, student.VKId);
                 else
                     DataBase.Students.Add(student);

@@ -11,3 +11,5 @@ AstroBot/bin/
 AstroBot/DB/DB\.mdf
 
 AstroBot/DB/DB_log\.ldf
+
+AstroBot/res/Scripts/

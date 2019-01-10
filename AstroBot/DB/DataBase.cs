@@ -11,11 +11,11 @@ namespace AstroBot.DB
 
         private static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\Aleksei\Documents\Github\AstroBot\AstroBot\DB\DB.mdf;Integrated Security=True";
         private static SqlConnection connection;
-        private static bool isOpen = false;
+        public static bool IsOpen = false;
 
         public static void OpenConnection()
         {
-            if (!isOpen)
+            if (!IsOpen)
             {
                 Logger.Log(Logger.Module.Core, Logger.Type.Info, "Openning DataBase connection...");
 
@@ -25,7 +25,7 @@ namespace AstroBot.DB
                 Students = new Students.Students(ref connection);
                 Tasks = new Tasks.Tasks(ref connection);
 
-                isOpen = true;
+                IsOpen = true;
 
                 Logger.Log(Logger.Module.Core, Logger.Type.Info, "DataBase connection opened");
             }
@@ -33,13 +33,13 @@ namespace AstroBot.DB
 
         public static void CloseConnection()
         {
-            if (isOpen)
+            if (IsOpen)
             {
                 Logger.Log(Logger.Module.Core, Logger.Type.Info, "Closing DataBase connection...");
 
                 connection.Close();
 
-                isOpen = false;
+                IsOpen = false;
 
                 Logger.Log(Logger.Module.Core, Logger.Type.Info, "DataBase connection closed");
             }

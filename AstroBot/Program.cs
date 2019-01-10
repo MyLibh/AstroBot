@@ -1,4 +1,6 @@
-﻿using AstroBot.Util;
+﻿using System;
+
+using AstroBot.Util;
 
 namespace AstroBot
 {
@@ -6,6 +8,9 @@ namespace AstroBot
     {
         static void Main(string[] args)
         {
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Green;
+
             CmdController.Execute();
         }
     }

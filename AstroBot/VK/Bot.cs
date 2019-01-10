@@ -9,6 +9,8 @@ using VkNet.Model.RequestParams;
 
 using AstroBot.VK.Commands;
 using AstroBot.Util;
+using VkNet.Exception;
+using System.Threading.Tasks;
 
 namespace AstroBot.VK
 {
@@ -96,7 +98,7 @@ namespace AstroBot.VK
                             Server = lpSettings.Server,
                             Ts = lpSettings.Ts,
                             Wait = 20
-                        });
+                        }).ContinueWith(CheckLongPollResponseForErrorsAndHandle).ConfigureAwait(false); ;
 
                     if (longPollResponse == default(BotsLongPollHistoryResponse))
                         continue;
@@ -105,9 +107,66 @@ namespace AstroBot.VK
 
                     lpSettings.Ts = longPollResponse.Ts;
                 }
-                catch (Exception ex)
+                catch (Exception exception)
                 {
+                    Logger.Log(Logger.Module.VK, Logger.Type.Error, exception.Message);
+                }
+            }
+        }
 
+        private static T CheckLongPollResponseForErrorsAndHandle<T>(Task<T> task)
+        {
+            if (task.IsFaulted)
+            {
+                if (task.Exception is AggregateException ae)
+                {
+                    foreach (Exception exception in ae.InnerExceptions)
+                    {
+                        if (exception is LongPollOutdateException lpoex)
+                        {
+                            lpSettings.Ts = lpoex.Ts;
+
+                            return default(T);
+                        }
+                        else if (exception is LongPollKeyExpiredException)
+                        {
+                            lpSettings = client.Groups.GetLongPollServer((ulong)group.Id.Value);
+
+                            return default(T);
+                        }
+                        else if (exception is LongPollInfoLostException)
+                        {
+                            lpSettings = client.Groups.GetLongPollServer((ulong)group.Id.Value);
+
+                            return default(T);
+                        }
+                        else
+                        {
+                            Logger.Log(Logger.Module.VK, Logger.Type.Error, exception.Message);
+
+                            throw exception;
+                        }
+                    }
+                }
+
+                Logger.Log(Logger.Module.VK, Logger.Type.Error, task.Exception.Message);
+                throw task.Exception;
+            }
+            else if (task.IsCanceled)
+            {
+                Logger.Log(Logger.Module.VK, Logger.Type.Info, "task.IsCanceled, possibly timeout reached");
+
+                return default(T);
+            }
+            else
+            {
+                try
+                {
+                    return task.Result;
+                }
+                catch (Exception exсeption)
+                {
+                    Logger.Log(Logger.Module.VK, Logger.Type.Error, exсeption.Message);
                     throw;
                 }
             }
@@ -115,6 +174,9 @@ namespace AstroBot.VK
 
         public static void Stop()
         {
+            if (client == null)
+                return;
+
             Logger.Log(Logger.Module.VK, Logger.Type.Info, "Stopping bot...");
 
             client.Dispose();

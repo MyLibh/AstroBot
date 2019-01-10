@@ -28,16 +28,20 @@ namespace AstroBot.DB.Students
 
         public async void Add(Student student)
         {
-            string sql = "INSERT INTO Students VALUES (@Name, @Surname, @Class, @TGId, @VKId)";
+            string sql = "INSERT INTO Students VALUES (@Role, @Name, @Surname, @Class, @TGId, @VKId, @CurrentTask, @CurrentAnswer, @CurrentTaskCompleted)";
 
             SqlCommand cmd = connection.CreateCommand();
             cmd.CommandText = sql;
 
             cmd.Parameters.Add("@Name", System.Data.SqlDbType.NVarChar).Value = student.Name;
+            cmd.Parameters.Add("@Role", System.Data.SqlDbType.NVarChar).Value = student.Role.ToString();
             cmd.Parameters.Add("@Surname", System.Data.SqlDbType.NVarChar).Value = student.Surname;
             cmd.Parameters.Add("@Class", System.Data.SqlDbType.NVarChar).Value = student.Class;
             cmd.Parameters.Add("@TGId", System.Data.SqlDbType.NVarChar).Value = student.TGId;
             cmd.Parameters.Add("@VKId", System.Data.SqlDbType.NVarChar).Value = student.VKId;
+            cmd.Parameters.Add("@CurrentTask", System.Data.SqlDbType.Int).Value = student.CurrentTask;
+            cmd.Parameters.Add("@CurrentAnswer", System.Data.SqlDbType.Float).Value = student.CurrentAnswer;
+            cmd.Parameters.Add("@CurrentTaskCompleted", System.Data.SqlDbType.Int).Value = student.CurrentTaskCompleted;
 
             await cmd.ExecuteNonQueryAsync();
         }
@@ -67,7 +71,7 @@ namespace AstroBot.DB.Students
             await cmd.ExecuteNonQueryAsync();
         }
 
-        public int Exist(ExistOption opt, string value)
+        public bool Exist(ExistOption opt, string value)
         {
             string sql = "SELECT COUNT(*) FROM Students WHERE " + opt.ToString() + " = @value";
             SqlCommand cmd = connection.CreateCommand();
@@ -75,15 +79,7 @@ namespace AstroBot.DB.Students
 
             cmd.Parameters.Add("@value", System.Data.SqlDbType.NVarChar).Value = value;
 
-            return Convert.ToInt32(cmd.ExecuteScalar());
-        }
-
-        public async void Execute(string sql)
-        {
-            SqlCommand cmd = connection.CreateCommand();
-            cmd.CommandText = sql;
-
-            await cmd.ExecuteNonQueryAsync();
+            return Convert.ToInt32(cmd.ExecuteScalar()) != 0;
         }
 
         public void Print()
@@ -97,31 +93,57 @@ namespace AstroBot.DB.Students
             {
                 if (reader.HasRows)
                 {
-                    Console.WriteLine("+----+-----------------+----------------------+-------+-----------------+-----------------+");
-                    Console.WriteLine($"| {{0, 2}} | {{1, {Student.NameMaxLength}}} | {{2, {Student.SurnameMaxLength}}} | {{3, 5}} | {{4, {Student.TGIdMaxLength}}} | {{5, {Student.VKIdMaxLength}}} |",
+                    printLine();
+                    Console.WriteLine($"| {{0, 2}} | {{1, {Student.RoleMaxLength}}} | {{2, {Student.NameMaxLength}}} | {{3, {Student.SurnameMaxLength}}} | {{4, 5}} | {{5, {Student.TGIdMaxLength}}} | {{6, {Student.VKIdMaxLength}}} |" +
+                        $" {{7, {Student.CurrentTaskMaxLength}}} | {{8, {Student.CurrentAnswerMaxLength}}} | {{9, {Student.CurrentTaskCompletedMaxLength}}} |",
                         "Id",
+                        "Role",
                         "Name",
                         "Surname",
-                        "Class", "TGId",
-                        "VKId");
-                    Console.WriteLine("+----+-----------------+----------------------+-------+-----------------+-----------------+");
+                        "Class", 
+                        "TGId",
+                        "VKId",
+                        "Task",
+                        "Ans",
+                        "Compl");
+                    printLine();
 
                     while (reader.Read())
-                        Console.WriteLine($"| {{0, 2}} | {{1, {Student.NameMaxLength}}} | {{2, {Student.SurnameMaxLength}}} | {{3, 5}} | {{4, {Student.TGIdMaxLength}}} | {{5, {Student.VKIdMaxLength}}} |",
+                        Console.WriteLine($"| {{0, 2}} | {{1, {Student.RoleMaxLength}}} | {{2, {Student.NameMaxLength}}} | {{3, {Student.SurnameMaxLength}}} | {{4, 5}} | {{5, {Student.TGIdMaxLength}}} | {{6, {Student.VKIdMaxLength}}} |" +
+                            $" {{7, {Student.CurrentTaskMaxLength}}} | {{8, {Student.CurrentAnswerMaxLength}}} | {{9, {Student.CurrentTaskCompletedMaxLength}}} |",
                             reader.GetValue(0),
                             reader.GetValue(1),
                             reader.GetValue(2),
                             reader.GetValue(3),
                             reader.GetValue(4),
-                            reader.GetValue(5));
+                            reader.GetValue(5),
+                            reader.GetValue(6),
+                            reader.GetValue(7),
+                            reader.GetValue(8),
+                            reader.GetValue(9));
 
-                    Console.WriteLine("+----+-----------------+----------------------+-------+-----------------+-----------------+");
+                    printLine();
                 }
                 else
                 {
                     Console.WriteLine("Students are empty");
                 }
             }
+        }
+
+        private void printLine()
+        {
+            Console.WriteLine("+-{0}-+-{1}-+-{2}-+-{3}-+-{4}-+-{5}-+-{6}-+-{7}-+-{8}-+-{9}-+",
+                        new string('-', 2),
+                        new string('-', Student.RoleMaxLength),
+                        new string('-', Student.NameMaxLength),
+                        new string('-', Student.SurnameMaxLength),
+                        new string('-', 5),
+                        new string('-', Student.TGIdMaxLength),
+                        new string('-', Student.VKIdMaxLength),
+                        new string('-', Student.CurrentTaskMaxLength),
+                        new string('-', Student.CurrentAnswerMaxLength),
+                        new string('-', Student.CurrentTaskCompletedMaxLength));
         }
     }
 }

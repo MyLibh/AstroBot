@@ -9,14 +9,17 @@ namespace AstroBot.Util
             while(true)
             {
                 var str = Console.ReadLine();
-                if(str == "help")
+                if (str == "help")
                 {
-                    Console.WriteLine("start  - Запустить программу");
-                    Console.WriteLine("exit   - Остановить программу");
-                    Console.WriteLine("showdb - Показать бд учеников");
-                    Console.WriteLine("help   - Вывести хелп");
+                    Console.WriteLine("start   - Запустить программу");
+                    Console.WriteLine("exit    - Остановить программу");
+                    Console.WriteLine("showdb  - Показать бд учеников");
+                    Console.WriteLine("starttg - Запустить телеграм бота");
+                    Console.WriteLine("startdb - Запустить базу данных");
+                    Console.WriteLine("startvk - Запустить вк бота");
+                    Console.WriteLine("help    - Вывести хелп");
                 }
-                else if(str == "start")
+                else if (str == "start")
                 {
                     Logger.Log(Logger.Module.Core, Logger.Type.Info, "Starting...");
 
@@ -47,7 +50,15 @@ namespace AstroBot.Util
 
                     Logger.Log(Logger.Module.Core, Logger.Type.Info, "Started");
                 }
-                else if(str == "exit" || str == "stop" || str == "close")
+                else if (str == "startdb")
+                {
+                    Logger.Log(Logger.Module.Core, Logger.Type.Info, "Starting...");
+
+                    DB.DataBase.OpenConnection();
+
+                    Logger.Log(Logger.Module.Core, Logger.Type.Info, "Started");
+                }
+                else if (str == "exit" || str == "stop" || str == "close")
                 {
                     Logger.Log(Logger.Module.Core, Logger.Type.Info, "Stopping...");
 
@@ -61,13 +72,16 @@ namespace AstroBot.Util
                     Console.ReadLine();
                     break;
                 }
-                else if(str == "showdb")
+                else if (str == "showdb")
                 {
-                    DB.DataBase.Students.Print();
+                    if (DB.DataBase.IsOpen)
+                        DB.DataBase.Students.Print();
+                    else
+                        Logger.Log(Logger.Module.Core, Logger.Type.Error, $"DB is not open");
                 }
                 else
                 {
-                    Logger.Log(Logger.Module.Core, Logger.Type.Info, $"Undefined command: '{str}'");
+                    Logger.Log(Logger.Module.Core, Logger.Type.Warning, $"Undefined command: '{str}'");
                     Console.WriteLine();
                 }
             }

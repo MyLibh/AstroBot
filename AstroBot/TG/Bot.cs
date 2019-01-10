@@ -63,6 +63,9 @@ namespace AstroBot.TG
 
         public static void Stop()
         {
+            if (client != null)
+                return;
+
             Logger.Log(Logger.Module.TG, Logger.Type.Info, "Stopping bot...");
 
             client.StopReceiving();
