@@ -65,7 +65,7 @@ namespace AstroBot.VK.Commands
                 Message = AnswerOk
             });
 
-            Logger.Log(Logger.Module.VK, Logger.Type.Info, $"{student.VKId}: {msg.Body}");
+            Logger.Log(Logger.Module.VK, Logger.Type.Info, $"{msg.UserId}: {msg.Body}");
         }
     }
 }

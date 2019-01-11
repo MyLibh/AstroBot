@@ -91,7 +91,7 @@ namespace AstroBot.DB.Tasks
                 {
                     reader.Read();
 
-                    return reader.GetInt32(6);
+                    return reader.GetInt32(7);
                 }
                 else
                     return 0;
@@ -112,7 +112,7 @@ namespace AstroBot.DB.Tasks
                 {
                     reader.Read();
 
-                    return reader.GetDouble(7);
+                    return reader.GetDouble(8);
                 }
                 else
                     return 0;
@@ -133,7 +133,7 @@ namespace AstroBot.DB.Tasks
                 {
                     reader.Read();
 
-                    return reader.GetInt32(8) != 0;
+                    return reader.GetInt32(9) != 0;
                 }
                 else
                     return false;
