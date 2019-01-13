@@ -24,7 +24,7 @@ namespace AstroBot.TG
 
             initCommandsList();
 
-            client = new TelegramBotClient(Settings.Token);
+            client = new TelegramBotClient(Config.Token);
             initCallbacks();
 
             client.StartReceiving();

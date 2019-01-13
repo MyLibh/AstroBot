@@ -24,7 +24,8 @@ namespace AstroBot.DB.Tasks
             CurrentTaskCompleted
         }
 
-        static public int MaxTasks{ get; private set; } = Convert.ToInt32(System.IO.File.ReadAllLines("../../../DB/Tasks/config.cfg")[0].Substring(6));
+        private static readonly string CONFIG_PATH = @"../../../config/tasks.cfg";
+        public static int MaxTasks{ get; private set; } = Convert.ToInt32(System.IO.File.ReadAllLines(CONFIG_PATH)[0].Substring(6));
 
         public Tasks(ref SqlConnection connection)
         {

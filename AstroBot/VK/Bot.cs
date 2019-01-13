@@ -34,9 +34,9 @@ namespace AstroBot.VK
             initCommandsList();
             
             client = new VkApi();
-            client.Authorize(new ApiAuthParams { AccessToken = Settings.Token });
+            client.Authorize(new ApiAuthParams { AccessToken = Config.Token });
 
-            group = client.Utils.ResolveScreenName(Settings.Name);
+            group = client.Utils.ResolveScreenName(Config.Name);
             lpSettings = client.Groups.GetLongPollServer((ulong)group.Id.Value);
 
             // ServicePointManager.DefaultConnectionLimit = 20;
