@@ -73,7 +73,7 @@ namespace AstroBot.DB.Students
 
         public bool Exist(ExistOption opt, string value)
         {
-            string sql = "SELECT COUNT(*) FROM Students WHERE " + opt.ToString() + " = @value";
+            string sql = "SELECT * FROM Students WHERE " + opt.ToString() + " = @value";
             SqlCommand cmd = connection.CreateCommand();
             cmd.CommandText = sql;
 

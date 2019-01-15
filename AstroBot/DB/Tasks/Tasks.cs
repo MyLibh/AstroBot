@@ -65,6 +65,12 @@ namespace AstroBot.DB.Tasks
         }
         public bool CheckAnswer(IdType type, string id, double answer)
         {
+            if(getCurTaskNum(type, id) == 0)
+                throw new ArgumentException("Вы еще не получили задачу");
+
+            if (getCompleted(type, id))
+                throw new ArgumentException("Вы уже решили эту задачу");
+
             var ans = this.getAnswer(type, id);
             if (ans == 0)
                 throw new ArgumentException("Вы еще не получали задание, используйте /task");
