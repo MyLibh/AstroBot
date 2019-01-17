@@ -17,7 +17,7 @@ namespace AstroBot.DB
         {
             if (!IsOpen)
             {
-                Logger.Log(Logger.Module.Core, Logger.Type.Info, "Openning DataBase connection...");
+                Logger.Log(Logger.Module.Core, Logger.Type.Debug, "Openning DataBase connection...");
 
                 connection = new SqlConnection(connectionString);
                 connection.Open();
@@ -27,7 +27,7 @@ namespace AstroBot.DB
 
                 IsOpen = true;
 
-                Logger.Log(Logger.Module.Core, Logger.Type.Info, "DataBase connection opened");
+                Logger.Log(Logger.Module.Core, Logger.Type.Debug, "DataBase connection opened");
             }
         }
 
@@ -35,13 +35,13 @@ namespace AstroBot.DB
         {
             if (IsOpen)
             {
-                Logger.Log(Logger.Module.Core, Logger.Type.Info, "Closing DataBase connection...");
+                Logger.Log(Logger.Module.Core, Logger.Type.Debug, "Closing DataBase connection...");
 
                 connection.Close();
 
                 IsOpen = false;
 
-                Logger.Log(Logger.Module.Core, Logger.Type.Info, "DataBase connection closed");
+                Logger.Log(Logger.Module.Core, Logger.Type.Debug, "DataBase connection closed");
             }
         }
     }

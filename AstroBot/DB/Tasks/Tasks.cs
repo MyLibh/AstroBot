@@ -84,6 +84,15 @@ namespace AstroBot.DB.Tasks
 
             return false;
         }
+
+        public bool CanSaveSolution(IdType type, string id)
+        {
+            if (getCurTaskNum(type, id) == 0)
+                throw new ArgumentException("Вы еще не получили задачу");
+
+            return getCompleted(type, id);        
+        }
+
         private int getCurTaskNum(IdType type, string id)
         {
             string sql = "SELECT * FROM Students WHERE " + type.ToString() + " = @id";
@@ -147,9 +156,9 @@ namespace AstroBot.DB.Tasks
             }
         }
 
-        private void update<T>(IdType idType, string id, UpdateOpt opt, T value)
+        private void update<T>(IdType type, string id, UpdateOpt opt, T value)
         {
-            string sql = "UPDATE Students SET " + opt.ToString() + " = @val WHERE " + idType.ToString() + " = @id";
+            string sql = "UPDATE Students SET " + opt.ToString() + " = @val WHERE " + type.ToString() + " = @id";
 
             SqlCommand cmd = connection.CreateCommand();
             cmd.CommandText = sql;

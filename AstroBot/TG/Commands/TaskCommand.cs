@@ -2,6 +2,7 @@
 
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 using AstroBot.Util;
 using AstroBot.DB;
@@ -17,6 +18,9 @@ namespace AstroBot.TG.Commands
 
         public override void Execute(Message msg, TelegramBotClient client)
         {
+            if (msg.Type != MessageType.Text)
+                return;
+
             var chatId = msg.Chat.Id;
             var msgId = msg.MessageId;
             try

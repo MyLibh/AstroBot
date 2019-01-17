@@ -2,6 +2,7 @@
 
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 using AstroBot.DB;
 using AstroBot.DB.Students;
@@ -18,6 +19,9 @@ namespace AstroBot.TG.Commands
 
         public override void Execute(Message msg, TelegramBotClient client)
         {
+            if (msg.Type != MessageType.Text)
+                return;
+
             var msgId   = msg.MessageId;
             var student = new Student();
 
@@ -38,22 +42,28 @@ namespace AstroBot.TG.Commands
                     throw new ArgumentException("Вы уже зарегистрированны");
 
                 if (DataBase.Students.Exist(Students.ExistOption.Surname, student.Surname))
+                {
                     DataBase.Students.Update(Students.UpdateOption.TGId, student.Surname, student.TGId);
+
+                    client.SendTextMessageAsync(msg.Chat.Id, "Ваш профиль был обновлен", replyToMessageId: msgId);
+
+                    Logger.Log(Logger.Module.TG, Logger.Type.Info, $"[UPDATE] {student.TGId}: {msg.Text}");
+                }
                 else
+                {
                     DataBase.Students.Add(student);
+
+                    client.SendTextMessageAsync(msg.Chat.Id, AnswerOk, replyToMessageId: msgId);
+
+                    Logger.Log(Logger.Module.TG, Logger.Type.Info, $"{student.TGId}: {msg.Text}");
+                }
             }
             catch(Exception exception)
             {
                 client.SendTextMessageAsync(msg.Chat.Id, AnswerError + "(" + exception.Message + ")\n" + AnswerInfo, replyToMessageId: msgId);
 
                 Logger.Log(Logger.Module.TG, Logger.Type.Warning, $"{msg.From.Username}: {msg.Text} ({exception.Message})");
-
-                return;
             }
-
-            client.SendTextMessageAsync(msg.Chat.Id, AnswerOk, replyToMessageId: msgId);
-
-            Logger.Log(Logger.Module.TG, Logger.Type.Info, $"{student.TGId}: {msg.Text}");
         }
     }
 }

@@ -17,57 +17,61 @@ namespace AstroBot.Util
                     Console.WriteLine("starttg - Запустить телеграм бота");
                     Console.WriteLine("startdb - Запустить базу данных");
                     Console.WriteLine("startvk - Запустить вк бота");
-                    Console.WriteLine("help    - Вывести хелп");
+                    Console.WriteLine("help    - Вывести хелп\n");
                 }
                 else if (str == "start")
                 {
-                    Logger.Log(Logger.Module.Core, Logger.Type.Info, "Starting...");
+                    Logger.Log(Logger.Module.Core, Logger.Type.Debug, "Starting...");
 
                     DB.DataBase.OpenConnection();
-
+                    GD.GoogleDrive.Init();
                     TG.Bot.Start();
                     VK.Bot.Start();
 
-                    Logger.Log(Logger.Module.Core, Logger.Type.Info, "Started");
+                    Logger.Log(Logger.Module.Core, Logger.Type.Debug, "Started");
+                    Console.WriteLine();
                 }
                 else if (str == "starttg")
                 {
-                    Logger.Log(Logger.Module.Core, Logger.Type.Info, "Starting...");
+                    Logger.Log(Logger.Module.Core, Logger.Type.Debug, "Starting...");
 
                     DB.DataBase.OpenConnection();
-
+                    GD.GoogleDrive.Init();
                     TG.Bot.Start();
 
-                    Logger.Log(Logger.Module.Core, Logger.Type.Info, "Started");
+                    Logger.Log(Logger.Module.Core, Logger.Type.Debug, "Started");
+                    Console.WriteLine();
                 }
                 else if (str == "startvk")
                 {
-                    Logger.Log(Logger.Module.Core, Logger.Type.Info, "Starting...");
+                    Logger.Log(Logger.Module.Core, Logger.Type.Debug, "Starting...");
 
                     DB.DataBase.OpenConnection();
-
+                    GD.GoogleDrive.Init();
                     VK.Bot.Start();
 
-                    Logger.Log(Logger.Module.Core, Logger.Type.Info, "Started");
+                    Logger.Log(Logger.Module.Core, Logger.Type.Debug, "Started");
+                    Console.WriteLine();
                 }
                 else if (str == "startdb")
                 {
-                    Logger.Log(Logger.Module.Core, Logger.Type.Info, "Starting...");
+                    Logger.Log(Logger.Module.Core, Logger.Type.Debug, "Starting...");
 
                     DB.DataBase.OpenConnection();
 
-                    Logger.Log(Logger.Module.Core, Logger.Type.Info, "Started");
+                    Logger.Log(Logger.Module.Core, Logger.Type.Debug, "Started");
+                    Console.WriteLine();
                 }
                 else if (str == "exit" || str == "stop" || str == "close")
                 {
-                    Logger.Log(Logger.Module.Core, Logger.Type.Info, "Stopping...");
+                    Logger.Log(Logger.Module.Core, Logger.Type.Debug, "Stopping...");
 
                     VK.Bot.Stop();
                     TG.Bot.Stop();
 
                     DB.DataBase.CloseConnection();
 
-                    Logger.Log(Logger.Module.Core, Logger.Type.Info, "Stopped");
+                    Logger.Log(Logger.Module.Core, Logger.Type.Debug, "Stopped");
 
                     Console.ReadLine();
                     break;

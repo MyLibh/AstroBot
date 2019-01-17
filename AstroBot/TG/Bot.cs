@@ -20,7 +20,7 @@ namespace AstroBot.TG
             if (client != null)
                 return;
 
-            Logger.Log(Logger.Module.TG, Logger.Type.Info, "Starting bot...");
+            Logger.Log(Logger.Module.TG, Logger.Type.Debug, "Starting bot...");
 
             initCommandsList();
 
@@ -29,7 +29,7 @@ namespace AstroBot.TG
 
             client.StartReceiving();
 
-            Logger.Log(Logger.Module.TG, Logger.Type.Info, "Bot started");
+            Logger.Log(Logger.Module.TG, Logger.Type.Debug, "Bot started");
         }
 
         public static TelegramBotClient Get()
@@ -39,7 +39,7 @@ namespace AstroBot.TG
 
         private static void initCommandsList()
         {
-            Logger.Log(Logger.Module.TG, Logger.Type.Info, "Initializing commands list...");
+            Logger.Log(Logger.Module.TG, Logger.Type.Debug, "\tInitializing commands list...");
 
             commandsList = new List<Command>();
             commandsList.Add(new RegisterCommand());
@@ -49,28 +49,28 @@ namespace AstroBot.TG
             commandsList.Add(new SolutionCommand());
             commandsList.Add(new StartCommand());
 
-            Logger.Log(Logger.Module.TG, Logger.Type.Info, "Commands list initialized");
+            Logger.Log(Logger.Module.TG, Logger.Type.Debug, "\tCommands list initialized");
         }
 
         private static void initCallbacks()
         {
-            Logger.Log(Logger.Module.TG, Logger.Type.Info, "Initializing callbacks...");
+            Logger.Log(Logger.Module.TG, Logger.Type.Debug, "\tInitializing callbacks...");
 
             client.OnMessage += MessageController.Update;
 
-            Logger.Log(Logger.Module.TG, Logger.Type.Info, "Callbacks initialized");
+            Logger.Log(Logger.Module.TG, Logger.Type.Debug, "\tCallbacks initialized");
         }
 
         public static void Stop()
         {
-            if (client != null)
+            if (client == null)
                 return;
 
-            Logger.Log(Logger.Module.TG, Logger.Type.Info, "Stopping bot...");
+            Logger.Log(Logger.Module.TG, Logger.Type.Debug, "Stopping bot...");
 
             client.StopReceiving();
 
-            Logger.Log(Logger.Module.TG, Logger.Type.Info, "Bot stopped");
+            Logger.Log(Logger.Module.TG, Logger.Type.Debug, "Bot stopped");
         }
     }
 }

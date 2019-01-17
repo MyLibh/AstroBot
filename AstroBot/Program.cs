@@ -10,7 +10,7 @@ namespace AstroBot
         {
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.Green;
-            //AstroBot.GD.GoogleDrive.ShowFiles();
+
             CmdController.Execute();
         }
     }

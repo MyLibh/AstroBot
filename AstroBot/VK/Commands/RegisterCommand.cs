@@ -27,7 +27,7 @@ namespace AstroBot.VK.Commands
                 String[] words = str.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                 if (words.Length != 4 || words[3].Length != 3)
-                    throw new ArgumentException("Invalid argument");
+                    throw new FormatException("Неправильный ввод");
 
                 student.Name    = words[1].Substring(0, Math.Min(words[1].Length, Student.NameMaxLength));
                 student.Surname = words[2].Substring(0, Math.Min(words[2].Length, Student.SurnameMaxLength));
@@ -35,37 +35,31 @@ namespace AstroBot.VK.Commands
                 student.VKId    = msg.UserId.ToString();
 
                 if (DataBase.Students.Exist(Students.ExistOption.VKId, student.VKId))
-                    throw new ArgumentException("Already registered");
+                    throw new ArgumentException("Вы уже зарегистрированны");
 
                 if (DataBase.Students.Exist(Students.ExistOption.Surname, student.Surname))
+                {
                     DataBase.Students.Update(Students.UpdateOption.VKId, student.Surname, student.VKId);
+
+                    send(client, msg, "Ваш профиль был обновлен");
+
+                    Logger.Log(Logger.Module.VK, Logger.Type.Info, $"[UPDATE] {msg.UserId}: {msg.Body}");
+                }
                 else
+                {
                     DataBase.Students.Add(student);
+
+                    send(client, msg, AnswerOk);
+
+                    Logger.Log(Logger.Module.VK, Logger.Type.Info, $"{msg.UserId}: {msg.Body}");
+                }
             }
             catch(Exception e)
             {
-                client.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams
-                {
-                    RandomId = Environment.TickCount,
-                    ForwardMessages = new List<long> { msg.Id.Value },
-                    UserId = msg.UserId,
-                    Message = AnswerError + "(" + e.Message + ")\n" + AnswerInfo
-                });
+                send(client, msg, AnswerError + "(" + e.Message + ")\n" + AnswerInfo);
 
                 Logger.Log(Logger.Module.VK, Logger.Type.Warning, $"{msg.UserId}: {msg.Body} ({e.Message})");
-
-                return;
             }
-
-            client.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams
-            {
-                RandomId = Environment.TickCount,
-                ForwardMessages = new List<long> { msg.Id.Value },
-                UserId = msg.UserId,
-                Message = AnswerOk
-            });
-
-            Logger.Log(Logger.Module.VK, Logger.Type.Info, $"{msg.UserId}: {msg.Body}");
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using VkNet;
+﻿using System;
+using System.Collections.Generic;
+
+using VkNet;
 using VkNet.Model;
 
 namespace AstroBot.VK.Commands
@@ -16,6 +19,17 @@ namespace AstroBot.VK.Commands
         public bool Contains(string command)
         {
             return /* command.Contains(Settings.Name) && */ command.Contains(this.Name);
+        }
+
+        protected void send(VkApi client, Message msg, string answer)
+        {
+            client.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams
+            {
+                RandomId = Environment.TickCount,
+                ForwardMessages = new List<long> { msg.Id.Value },
+                UserId = msg.UserId,
+                Message = answer
+            });
         }
     }
 }

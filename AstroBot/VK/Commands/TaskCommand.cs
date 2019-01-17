@@ -23,53 +23,27 @@ namespace AstroBot.VK.Commands
                 if (DataBase.Students.Exist(Students.ExistOption.VKId, msg.UserId.ToString()))
                 {
                     var tuple = DataBase.Tasks.GetTask(DB.Tasks.Tasks.IdType.VKId, msg.UserId.ToString());
-                    client.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams
-                    {
-                        RandomId = Environment.TickCount,
-                        ForwardMessages = new List<long> { msg.Id.Value },
-                        UserId = msg.UserId,
-                        Message = AnswerOk + tuple.Item1
-                    });
+                    send(client, msg, AnswerOk + tuple.Item1);
                 }
                 else
-                {
-                    client.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams
-                    {
-                        RandomId = Environment.TickCount,
-                        ForwardMessages = new List<long> { msg.Id.Value },
-                        UserId = msg.UserId,
-                        Message = "Данный аккаунт незарегистрирован, используйте /register"
-                    });
-
-                    return;
+                { 
+                    send(client, msg, "Данный аккаунт незарегистрирован, используйте /register");
                 }
+
+                Logger.Log(Logger.Module.VK, Logger.Type.Info, $"{msg.UserId}: {msg.Body}");
             }
             catch (ArgumentException exception)
             {
-                client.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams
-                {
-                    RandomId = Environment.TickCount,
-                    ForwardMessages = new List<long> { msg.Id.Value },
-                    UserId = msg.UserId,
-                    Message = exception.Message
-                });
+                send(client, msg, exception.Message);
 
                 Logger.Log(Logger.Module.VK, Logger.Type.Warning, $"{msg.UserId}: {msg.Body} ({exception.Message})");
             }
             catch (Exception exception)
             {
-                client.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams
-                {
-                    RandomId = Environment.TickCount,
-                    ForwardMessages = new List<long> { msg.Id.Value },
-                    UserId = msg.UserId,
-                    Message = AnswerError + "(" + exception.Message + ")\n" + AnswerInfo
-                });
+                send(client, msg, AnswerError + "(" + exception.Message + ")\n" + AnswerInfo);
 
                 Logger.Log(Logger.Module.VK, Logger.Type.Warning, $"{exception.Message}: {msg.Body} ({exception.Message})");
-            }
-
-            Logger.Log(Logger.Module.VK, Logger.Type.Info, $"{msg.UserId}: {msg.Body}");
+            }    
         }
     }
 }

@@ -13,10 +13,8 @@ namespace AstroBot.TG
             var msg      = e.Message;
             var client   = Bot.Get();
 
-            if (msg.Type != MessageType.Text)
-                return;
-
-            Logger.Log(Logger.Module.TG, Logger.Type.Debug, msg.From.Username + " > " + e.Message.Text);
+            if(msg.Type == MessageType.Text)
+                Logger.Log(Logger.Module.TG, Logger.Type.Debug, msg.From.Username + " > " + msg.Text);
 
             foreach (var command in commands)
                 if (command.Contains(msg.Text))

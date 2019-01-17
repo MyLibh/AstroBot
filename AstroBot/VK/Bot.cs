@@ -29,7 +29,7 @@ namespace AstroBot.VK
             if (client != null)
                 return;
 
-            Logger.Log(Logger.Module.VK, Logger.Type.Info, "Starting bot...");
+            Logger.Log(Logger.Module.VK, Logger.Type.Debug, "Starting bot...");
 
             initCommandsList();
             
@@ -44,7 +44,7 @@ namespace AstroBot.VK
             initCallbacks();
             startLongPoolEventHandler();
 
-            Logger.Log(Logger.Module.TG, Logger.Type.Info, "Bot started");
+            Logger.Log(Logger.Module.VK, Logger.Type.Debug, "Bot started");
         }
 
         public static VkApi Get()
@@ -54,7 +54,7 @@ namespace AstroBot.VK
 
         private static void initCommandsList()
         {
-            Logger.Log(Logger.Module.VK, Logger.Type.Info, "Initializing commands list...");
+            Logger.Log(Logger.Module.VK, Logger.Type.Debug, "\tInitializing commands list...");
 
             commandsList = new List<Command>();
             commandsList.Add(new RegisterCommand());
@@ -64,7 +64,7 @@ namespace AstroBot.VK
             commandsList.Add(new SolutionCommand());
             commandsList.Add(new StartCommand());
 
-            Logger.Log(Logger.Module.VK, Logger.Type.Info, "Commands list initialized");
+            Logger.Log(Logger.Module.VK, Logger.Type.Debug, "\t\tCommands list initialized");
         }
 
         private static void processLongPollEvents(BotsLongPollHistoryResponse pollResponse)
@@ -76,16 +76,16 @@ namespace AstroBot.VK
 
         private static void initCallbacks()
         {
-            Logger.Log(Logger.Module.VK, Logger.Type.Info, "Initializing callbacks...");
+            Logger.Log(Logger.Module.VK, Logger.Type.Debug, "\tInitializing callbacks...");
 
             onMessage += MessageController.Update;
 
-            Logger.Log(Logger.Module.VK, Logger.Type.Info, "Callbacks initialized");
+            Logger.Log(Logger.Module.VK, Logger.Type.Debug, "\t\tCallbacks initialized");
         }
 
         private static async void startLongPoolEventHandler()
         {
-            Logger.Log(Logger.Module.VK, Logger.Type.Info, "Starting LongPool Event Handler");
+            Logger.Log(Logger.Module.VK, Logger.Type.Debug, "\tStarting LongPool Event Handler");
 
             while (true)
             {
@@ -177,11 +177,11 @@ namespace AstroBot.VK
             if (client == null)
                 return;
 
-            Logger.Log(Logger.Module.VK, Logger.Type.Info, "Stopping bot...");
+            Logger.Log(Logger.Module.VK, Logger.Type.Debug, "Stopping bot...");
 
             client.Dispose();
 
-            Logger.Log(Logger.Module.VK, Logger.Type.Info, "Stopped");
+            Logger.Log(Logger.Module.VK, Logger.Type.Debug, "Stopped");
         }
     }
 }

@@ -2,6 +2,7 @@
 
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 using AstroBot.DB;
 using AstroBot.DB.Students;
@@ -14,12 +15,14 @@ namespace AstroBot.TG.Commands
         public new string AnswerOk => "Да, ответ правильный :)\n Теперь можете сдать ваше решение через /solution";
         public new string AnswerError => "Я тебя не понимаю!";
         public new string AnswerInfo => "Чтобы проверить последнее задание, введите:\n /answer <Ваш ответ>.\n Например,\n /answer 100";
-
         public string AnswerBadAnswer => "Увы, но ответ неправильный :(";
 
         public override string Name => "answer";
         public override void Execute(Message msg, TelegramBotClient client)
         {
+            if (msg.Type != MessageType.Text)
+                return;
+
             var chatId = msg.Chat.Id;
             var msgId = msg.MessageId;
             try
