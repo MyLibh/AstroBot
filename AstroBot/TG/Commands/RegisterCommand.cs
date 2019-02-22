@@ -43,7 +43,7 @@ namespace AstroBot.TG.Commands
 
                 if (DataBase.Students.Exist(Students.ExistOption.Surname, student.Surname))
                 {
-                    DataBase.Students.Update(Students.UpdateOption.TGId, student.Surname, student.TGId);
+                    DataBase.Students.Update(Students.IdType.TGId, student.Surname, student.TGId);
 
                     client.SendTextMessageAsync(msg.Chat.Id, "Ваш профиль был обновлен", replyToMessageId: msgId);
 

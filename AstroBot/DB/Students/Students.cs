@@ -8,7 +8,7 @@ namespace AstroBot.DB.Students
     {
         private SqlConnection connection;
 
-        public enum UpdateOption
+        public enum IdType
         {
             TGId,
             VKId
@@ -24,6 +24,29 @@ namespace AstroBot.DB.Students
         public Students(ref SqlConnection connection)
         {
             this.connection = connection;
+        }
+
+        public Student GetByID(IdType opt, string value)
+        {
+            string sql = "SELECT * FROM Students WHERE " + opt.ToString() + " = @value";
+            SqlCommand cmd = connection.CreateCommand();
+            cmd.CommandText = sql;
+
+            cmd.Parameters.Add("@value", System.Data.SqlDbType.NVarChar).Value = value;
+
+            Student student = new Student();
+            using (var reader = cmd.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    student.Name    = Convert.ToString(reader.GetValue(2));
+                    student.Surname = Convert.ToString(reader.GetValue(3));
+                    student.Class   = Convert.ToString(reader.GetValue(4));
+                    student.CurrentTask = Convert.ToInt32(reader.GetValue(7));
+                }
+            }
+
+            return student;
         }
 
         public async void Add(Student student)
@@ -46,7 +69,7 @@ namespace AstroBot.DB.Students
             await cmd.ExecuteNonQueryAsync();
         }
 
-        public async void Update(UpdateOption opt, string surname, string newMessengerId)
+        public async void Update(IdType opt, string surname, string newMessengerId)
         {
             string sql = "UPDATE Students SET " + opt.ToString() + " = @messengerId WHERE Surname = @Surname";
 
@@ -85,7 +108,7 @@ namespace AstroBot.DB.Students
         public void Print()
         {
             string sql = "SELECT * FROM Students";
-
+  
             SqlCommand cmd = connection.CreateCommand();
             cmd.CommandText = sql;
 

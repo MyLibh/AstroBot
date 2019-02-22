@@ -39,7 +39,7 @@ namespace AstroBot.VK.Commands
 
                 if (DataBase.Students.Exist(Students.ExistOption.Surname, student.Surname))
                 {
-                    DataBase.Students.Update(Students.UpdateOption.VKId, student.Surname, student.VKId);
+                    DataBase.Students.Update(Students.IdType.VKId, student.Surname, student.VKId);
 
                     send(client, msg, "Ваш профиль был обновлен");
 

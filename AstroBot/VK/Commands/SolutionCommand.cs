@@ -39,15 +39,14 @@ namespace AstroBot.VK.Commands
                     if (DataBase.Tasks.CanSaveSolution(DB.Tasks.Tasks.IdType.VKId, msg.UserId.ToString()))
                     {
                         int cnt = 0;
+                        var student = DataBase.Students.GetByID(Students.IdType.VKId, msg.UserId.ToString());
                         foreach (var attachment in msg.Attachments)
                             if (attachment.Type == typeof(Photo))
                             {
                                 Photo photo = attachment.Instance as Photo;
-
-                                // max size download
-                                if(photo.Photo807 != null && downloadFile(photo.Photo807))
+                                if(downloadFile(getUrlOfBigPhoto(photo)))
                                 {
-                                    GoogleDrive.Upload(TMP_FILE_PATH, "test");
+                                    GoogleDrive.Upload(student, TMP_FILE_PATH, student.CurrentTask + "_" + cnt);
 
                                     System.IO.File.Delete(TMP_FILE_PATH);
 
@@ -105,6 +104,37 @@ namespace AstroBot.VK.Commands
             }
 
             return true;
+        }
+
+        private static Uri getUrlOfBigPhoto(VkNet.Model.Attachments.Photo photo)
+        {
+            if (photo == null)
+                return null;
+            if (photo.Photo2560 != null)
+                return photo.Photo2560;
+            if (photo.Photo1280 != null)
+                return photo.Photo1280;
+            if (photo.Photo807 != null)
+                return photo.Photo807;
+            if (photo.Photo604 != null)
+                return photo.Photo604;
+            if (photo.Photo130 != null)
+                return photo.Photo130;
+            if (photo.Photo75 != null)
+                return photo.Photo75;
+            if (photo.Sizes?.Count > 0)
+            {
+                var bigSize = photo.Sizes[0];
+                for (int i = 0; i < photo.Sizes.Count; i++)
+                {
+                    var photoSize = photo.Sizes[i];
+                    if (photoSize.Height > bigSize.Height && photoSize.Width > bigSize.Width)
+                        bigSize = photoSize;
+                }
+                return bigSize.Url;
+            }
+
+            return null;
         }
     }
 }
